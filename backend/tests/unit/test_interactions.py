@@ -46,3 +46,14 @@ def test_filter_duplicate_item_ids() -> None:
     ]
     result = filter_by_max_item_id(interactions=interactions, max_item_id=5)
     assert len(result) == 3
+
+def test_filter_excludes_interaction_with_different_learner_id() -> None:
+    interactions = [
+        _make_log(1, 1, 1),
+        _make_log(2, 1, 2),
+        _make_log(3, 2, 1)
+    ]
+    result = filter_by_max_item_id(interactions=interactions, max_item_id=1)
+    assert len(result) == 2
+    assert all(i.item_id == 1 for i in result)
+    assert {i.learner_id for i in result} == {1, 2}
