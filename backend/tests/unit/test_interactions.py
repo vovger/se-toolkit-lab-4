@@ -30,3 +30,19 @@ def test_filter_includes_interaction_at_boundary() -> None:
     result = filter_by_max_item_id(interactions=interactions, max_item_id=2)
     assert len(result) == 1
     assert result[0].id == 1
+
+def test_filter_empty_list_returns_empty() -> None:
+    interactions = []
+    result = filter_by_max_item_id(interactions=interactions, max_item_id=5)
+    assert len(result) == 0
+    assert result == []
+
+
+def test_filter_duplicate_item_ids() -> None:
+    interactions = [
+        _make_log(1, 5, 1),
+        _make_log(2, 5, 1),
+        _make_log(3, 5, 1)
+    ]
+    result = filter_by_max_item_id(interactions=interactions, max_item_id=5)
+    assert len(result) == 3
